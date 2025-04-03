@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 async function Navbar() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
 
   return (
     <nav className="flex justify-between items-center bg-[#565c6e] text-white px-24 py-3">
