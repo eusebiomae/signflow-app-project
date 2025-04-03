@@ -58,7 +58,7 @@ function RegisterPage() {
             },
           })}
           className="p-3 rounded block mb-2 bg-slate-900 text-slate-300 w-full"
-          placeholder="yourUser123"
+          placeholder="Mauro Gonçalves"
         />
 
         {errors.username && (
