@@ -1,9 +1,9 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import db from '@/libs/db'
-import bcrypt from 'bcrypt'
+import db from "@/libs/db";
+import bcrypt from "bcrypt";
 
-export const authOptions = {
+const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -12,36 +12,28 @@ export const authOptions = {
         password: { label: "Password", type: "password", placeholder: "*****" },
       },
       async authorize(credentials) {
-        console.log(credentials)
+        if (!credentials) throw new Error("Credentials are missing");
 
         const userFound = await db.user.findUnique({
-            where: {
-                email: credentials?.email
-            }
-        })
+          where: { email: credentials.email },
+        });
 
-        if (!userFound) throw new Error('No user found')
+        if (!userFound) throw new Error("No user found");
 
-        console.log(userFound)
-
-        if (!credentials) throw new Error('Credentials are missing');
-        const matchPassword = await bcrypt.compare(credentials.password, userFound.password)
-
-        if (!matchPassword) throw new Error('Wrong password')
+        const matchPassword = await bcrypt.compare(credentials.password, userFound.password);
+        if (!matchPassword) throw new Error("Wrong password");
 
         return {
-            id: userFound.id.toString(),
-            name: userFound.username,
-            email: userFound.email,
-        }
+          id: userFound.id.toString(),
+          name: userFound.username,
+          email: userFound.email,
+        };
       },
     }),
   ],
   pages: {
     signIn: "/auth/login",
-  }
-};
-
-const handler = NextAuth(authOptions);
+  },
+});
 
 export { handler as GET, handler as POST };
