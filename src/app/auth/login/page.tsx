@@ -81,9 +81,17 @@ function LoginPage() {
           </span>
         )}
 
-        <button className="w-full bg-blue-500 text-white p-3 rounded-lg mt-2 tracking-[.25em]">
+        <button className="w-full bg-blue-500 text-white p-3 rounded-lg mt-2 tracking-[.25em] cursor-pointer">
           Login
         </button>
+
+        <div className="mt-4 tracking-wide">
+          Don&apos;t have an account?{" "}
+          <span className="text-blue-500 cursor-pointer hover:underline">
+            <a href="/auth/register">Register</a>
+          </span>
+        </div>
+        
       </form>
     </div>
   );

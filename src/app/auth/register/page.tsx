@@ -14,7 +14,7 @@ function RegisterPage() {
     if (data.password !== data.confirmPassword) {
       return alert("Passwords do not match");
     }
-
+  
     const res = await fetch("/api/auth/register", {
       method: "POST",
       body: JSON.stringify({
@@ -26,10 +26,17 @@ function RegisterPage() {
         "Content-Type": "application/json",
       },
     });
-
-    if (res.ok) {
-      router.push("/auth/login");
+  
+    const responseData = await res.json(); // Captura a resposta JSON do servidor
+  
+    if (!res.ok) {
+      // Exibe o erro vindo do backend (Ex: "Username already exists")
+      alert(responseData.message);
+      return;
     }
+  
+    alert("User registered successfully!");
+    router.push("/auth/login");
   });
 
   console.log(errors);
@@ -123,7 +130,7 @@ function RegisterPage() {
           </span>
         )}
 
-        <button className="w-full bg-blue-500 text-white p-3 rounded-lg mt-2 tracking-[.25em]">
+        <button className="w-full bg-blue-500 text-white p-3 rounded-lg mt-2 tracking-[.25em] cursor-pointer">
           Register
         </button>
       </form>
